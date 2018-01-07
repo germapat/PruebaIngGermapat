@@ -3,10 +3,11 @@
 
 
 <div class="box-body">
-    <form role="form" method="get" action="{{ route('get_registre_user') }}">
-
+    <form role="form" method="post" action="{{ route('get_registre_user') }}">
+        {{ csrf_field() }}
         <div class="row">
             @foreach ($cliente as $value)
+                @endforeach
             @component('partial.cliente')
                 @slot('documento')
                     {{ $value->documento }}
@@ -21,11 +22,11 @@
                     {{ $value->referente_pago }}
                 @endslot
             @endcomponent
-            @endforeach
+
             <div class="col-md-6">
                 <div class="form-group">
                     <p class=""><b>Indique el tipo de cuenta con la cual realizara el pago</b></p>
-                    <select value = "" class="form-control" name="tipo_persona" id="sel_type_person"  >
+                    <select value = "" class="form-control" name="tipo_persona" id="sel_type_person" >
                         <option value="1">Persona</option>
                         <option value="2">Empresa</option>
                     </select>
@@ -33,7 +34,7 @@
                 <div class="form-group">
                     <div class="form-group">
                         <p class=""><b>Seleccione de la lista la entidad con la que desea realizar el pagos</b></p>
-                        <select value = "" class="form-control" name="tipo_persona" id="sel_bank"  >
+                        <select value = "" class="form-control" name="bank_code" id="sel_bank"  >
                             @foreach ($bank_list as $key => $value)
                                 <option selected = "" value="{{$value->bankCode}}" id="opt_seleccionar">{{$value->bankName}}</option>
 

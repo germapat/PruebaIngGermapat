@@ -4,52 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "78f9d7935fc34b6a663b7b9922c32153",
-    "content-hash": "325b6adca04615b8d4d7cac6a1546c36",
+    "hash": "ac501c91326c54476f98bb0431e2cfa8",
+    "content-hash": "5eba86da256ddeb8084c32d3d10e18d3",
     "packages": [
-        {
-            "name": "artisaninweb/laravel-soap",
-            "version": "0.3.0.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/artisaninweb/laravel-soap.git",
-                "reference": "f6e1bfbf635a1dcde51f2d183b45fd7fc6224cab"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/artisaninweb/laravel-soap/zipball/f6e1bfbf635a1dcde51f2d183b45fd7fc6224cab",
-                "reference": "f6e1bfbf635a1dcde51f2d183b45fd7fc6224cab",
-                "shasum": ""
-            },
-            "require": {
-                "ext-soap": "*",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Artisaninweb\\SoapWrapper": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael van de Rijt",
-                    "email": "me@mvdrijt.com"
-                }
-            ],
-            "description": "A SoapClient wrapper integration for Laravel",
-            "keywords": [
-                "client",
-                "laravel",
-                "soap",
-                "wrapper"
-            ],
-            "time": "2017-04-03 06:13:01"
-        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",

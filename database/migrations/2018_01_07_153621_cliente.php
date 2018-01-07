@@ -13,12 +13,24 @@ class Cliente extends Migration
      */
     public function up()
     {
+
         Schema::create('cliente',function($table){
+            $table->increments('id');
             $table->string('documento');
             $table->string('nombres');
             $table->string('apellidos');
             $table->string('correo');
             $table->string('referente_pago');
+
+        });
+
+        Schema::create('cliente_transaccion', function ($table) {
+            $table->increments('id');
+            $table->integer('cliente_id')->unsigned();
+            $table->foreign('cliente_id')
+              ->references('id')
+              ->on('cliente');
+
 
         });
     }
@@ -30,6 +42,7 @@ class Cliente extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('cliente_transaccion');
         Schema::dropIfExists('cliente');
     }
 }

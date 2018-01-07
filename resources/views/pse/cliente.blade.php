@@ -7,8 +7,8 @@
 @section('content')
 
     <div class="box-body">
-
-        <form id='frm_cliente' role="form" method="get" action="{{ route('bank_list') }}">
+            {{ csrf_field() }}
+        <form id='frm_cliente_pse' role="form" method="post" action="{{ route('create_transaction') }}">
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -39,18 +39,18 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label for="" class="col-md-4">E-mail</label>
-                        <input required type="email" name="correo" value="">
+                        <input required type="email" id="correo" name="correo" value="">
                     </div>
                 </div>
                 <div class="">
-                    <button class="btn btn-info" type="submit" id="id_abandonar_pago" name="pagar">Abandonar el pago</button>
+                    <button class="btn btn-info" type="button" id="id_abandonar_pago" name="pagar">Abandonar el pago</button>
                     <button class="btn btn-info" type="button" id="id_seguir" name="pagar">Seguir</button>
                 </div>
 
             </form>
         </div>
         @section('script')
-            <script src ="/js/my_script.js/cliente/cliente.js"></script>
+            <script src ="/js/my_script.js/cliente_pse/cliente_pse.js"></script>
         @endsection
 
     @endsection

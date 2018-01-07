@@ -12,7 +12,7 @@ $('#cliente_pagar').click(function() {
             alertas('Alerta','No encontro ningun registro con el documento: '+documento,'warning')
             return false;
         }else {
-            $('#cliente_id').val(result.result.documento)
+            
             $( "#frm_cliente" ).submit();
         }
     })

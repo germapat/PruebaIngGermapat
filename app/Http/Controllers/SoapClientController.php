@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\FunctionsController;
 use App\Models\Cliente;
+use App\Models\ClientePse;
 
 class SoapClientController extends FunctionsController
 {
@@ -12,7 +13,7 @@ class SoapClientController extends FunctionsController
 *Funcion para listar los bancos y mostrar los datos del cliente
  */
     public function bank_list(Request $request)
-    {
+{
         $input = $request->all();
 
         $cliente = Cliente::select('*')->where('documento',$input['documento'])->get();
@@ -30,6 +31,7 @@ class SoapClientController extends FunctionsController
     public function get_client_list($documento)
     {
         $cliente = Cliente::select('*')->where('documento',$documento)->get()->toArray();
+
         return json_encode(['result'=>$cliente]);
     }
     /*
@@ -40,8 +42,23 @@ class SoapClientController extends FunctionsController
     return view('comercio.cliente');
 
     }
-    public function get_registre_user(Request $request)
+    public function cliente_pse(Request $request)
     {
+        $input = $request->all();
+        dd($input);
+        session(["cliente"=>$request]);
+
         return view('pse.cliente');
+    }
+    public function cliente_pse_get(Request $request)
+    {
+        $input = $request->all();
+        $cliente_pse = ClientePse::select('*')->where('correo',$input['correo'])
+        ->get()->toArray();
+        return json_encode(['result'=>$cliente_pse]);
+    }
+    public function create_transaction(Request $request)
+    {
+
     }
 }
