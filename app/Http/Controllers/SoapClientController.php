@@ -2,53 +2,46 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use SoapClient;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\FunctionsController;
+use App\Models\Cliente;
 
-class SoapClientController
+class SoapClientController extends FunctionsController
 {
-    /**
-    * @var SoapWrapper
-    */
-    protected $soapClient;
-
-    /**
-    * SoapController constructor.
-    *
-    * @param SoapWrapper $soapClient
-    */
-
-
-    public function show()
+/*
+*Funcion para listar los bancos y mostrar los datos del cliente
+ */
+    public function bank_list(Request $request)
     {
-        $bank = Cache::get('bank');
-        dd($bank);
-        if ( $bank==null) {
-            $minutes = 1;
+        $input = $request->all();
 
-            $bank = Cache::remember('bank', $minutes, function () {
-                $seed = date('c');
-                $hashString = sha1($seed.'024h1IlD', false);
-                $servicio="https://test.placetopay.com/soap/pse/?wsdl"; //url del servicio
-                $parametros= ['auth'=>([
-                    'login' => '6dd490faf9cb87a9862245da41170ff2',
-                    'tranKey' =>$hashString,
-                    'seed' => $seed])];
+        $cliente = Cliente::select('*')->where('documento',$input['documento'])->get();
 
-
-                        $client = new SoapClient($servicio, $parametros);
-                        $client ->__setLocation('https://test.placetopay.com/soap/pse/');
-                        $result = $client->getBankList($parametros);//llamamos al métdo que nos interesa con los parámetros
-
-            return $cache=$result;
-        });
-
+        $bank_list = Cache::get('bank');
+        # se validad si hay datos en cache y si no hay se consume el api getBankList
+        if ( $bank_list==null) {
+            $bank_list = $this->get_bank_list();
         }
-
-
-                var_dump($bank);
-
-                exit;
-
-        }
+        return view('comercio.listbank',compact('bank_list',$bank_list,'cliente',$cliente));
     }
+    /*
+    *Funcion para validar que el cliente exista
+     */
+    public function get_client_list($documento)
+    {
+        $cliente = Cliente::select('*')->where('documento',$documento)->get()->toArray();
+        return json_encode(['result'=>$cliente]);
+    }
+    /*
+    *Funcion para mostra el formulario de consulta del cliente
+     */
+    public function client()
+    {
+    return view('comercio.cliente');
+
+    }
+    public function get_registre_user(Request $request)
+    {
+        return view('pse.cliente');
+    }
+}

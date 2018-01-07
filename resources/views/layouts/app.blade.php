@@ -85,7 +85,7 @@
 
         <ul class="sidebar-menu">
             <li>
-                <a href="{{ route('bank_list') }}"title="Menu 1" class = "fa fa-plus">
+                <a href="{{ route('client') }}"title="Menu 1" class = "fa fa-plus">
                     <i class="pull-right "></i>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -359,6 +359,7 @@
 <!-- datepicker -->
 <script src="/plugins/bootstrapdatepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="/plugins/bootstrapdatepicker/locales/bootstrap-datepicker.es.min.js"></script>
+<script src="/js/my_script.js/function/function.js"></script>
 
 
 @if (Session::has('notifier.notice'))

@@ -16,4 +16,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/list/bank','SoapClientController@show')->name('bank_list');
+Route::get('/listar/bancos','SoapClientController@bank_list')->name('bank_list');
+Route::get('/cliente','SoapClientController@client')->name('client');
+Route::get('/cliente/{id}/consultar','SoapClientController@get_client_list')->name('client_list');
+Route::get('/cliente/registrar','SoapClientController@get_registre_user')->name('get_registre_user');
