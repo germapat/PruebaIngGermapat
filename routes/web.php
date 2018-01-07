@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/list/bank','SoapClientController@show')->name('bank_list');
