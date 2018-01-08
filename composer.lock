@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ac501c91326c54476f98bb0431e2cfa8",
-    "content-hash": "5eba86da256ddeb8084c32d3d10e18d3",
+    "hash": "bce71471d59512844f65b0dafa9e8353",
+    "content-hash": "492e1958bc392de5730bac111f5154f3",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -406,6 +406,34 @@
                 }
             ],
             "time": "2015-04-20 18:58:01"
+        },
+        {
+            "name": "jorgejavierleon/laravelpnotify",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jorgejavierleon/LaravelPnotify.git",
+                "reference": "623bb6b374e57266369722d1344a809a10d73c9a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jorgejavierleon/LaravelPnotify/zipball/623bb6b374e57266369722d1344a809a10d73c9a",
+                "reference": "623bb6b374e57266369722d1344a809a10d73c9a",
+                "shasum": ""
+            },
+            "require-dev": {
+                "benconstable/phpspec-laravel": "~2.0",
+                "phpspec/phpspec": "~2.0",
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jleon\\LaravelPnotify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2015-09-25 11:57:01"
         },
         {
             "name": "laravel/framework",

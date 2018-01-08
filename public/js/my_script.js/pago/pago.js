@@ -15,7 +15,8 @@ $('#btn_pagar').click(function(event) {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 }).always(function(result) {
-    console.log(result.status)
+    console.log(result.length)
+    console.log(result.result)
         if (result.estado==200) {
             window.location.assign(result.result)
         }else {

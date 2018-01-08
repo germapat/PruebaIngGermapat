@@ -20,3 +20,4 @@ Route::post('/listar/bancos','SoapClientController@bank_list')->name('bank_list'
 Route::get('/cliente','SoapClientController@client')->name('client');
 Route::get('/cliente/{id}/consultar','SoapClientController@get_client_list')->name('client_list');
 Route::post('/cliente/pagar','SoapClientController@crear_transaccion')->name('get_registre_user');
+Route::get('/{referente}/pago/realizado','SoapClientController@pago_realizado')->name('pago_realizado');

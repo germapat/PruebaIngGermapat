@@ -35,7 +35,9 @@ class Cliente extends Migration
             $table->string('estado_pago')->default('1');
             $table->string('transactionID');
             $table->string('sessionID');
+            $table->string('bank_code');
             $table->integer('cliente_id')->unsigned();
+            $table->timestamps();
             $table->foreign('cliente_id')
               ->references('id')
               ->on('cliente');

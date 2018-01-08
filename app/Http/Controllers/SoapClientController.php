@@ -6,9 +6,19 @@ use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\FunctionsController;
 use App\Models\Cliente;
 use App\Models\ClienteTransaccion;
+use Jleon\LaravelPnotify\Notify;
 
 class SoapClientController extends FunctionsController
 {
+    public function pago_realizado($referente_pago)
+    {   $cliente = Cliente::select('*')
+        ->join('cliente_transaccion','cliente_transaccion.cliente_id','=','cliente.id')
+        ->where('cliente.referente_pago',$referente_pago)
+        ->get();
+
+        Notify::success('Pago registrado correctamente','Noticia');
+        return view('comercio.pagorealizado',compact('cliente',$cliente));
+    }
 
     /*
     *Funcion para listar los bancos y mostrar los datos del cliente
@@ -54,23 +64,23 @@ class SoapClientController extends FunctionsController
         $input = $request->all();
 
         $cliente = Cliente::select('*')->where('documento',$input['documento'])->get()->toArray();
+
         #se toma la ip del cliente
         $ip = $this->get_ip();
         #se toma el navegador
         $navegador = $this->get_navegador();
         # se almacenan los datos del basicos del cliente#
-        session(["cliente"=>$cliente[0],'tipo_persona'=>$input['tipo_persona'],
+        session(['cliente'=>$cliente,'tipo_persona'=>$input['tipo_persona'],
         'ip_client'=>$ip,'navegador' =>$navegador,'bank_code'=>$input['sel_bank']]);
-
         $crear_transaccion = $this->create_transactions();
-        
+
     if ($crear_transaccion->returnCode=='SUCCESS') {
         // 'cliente_id', 'ip','estado_pago','transactionID','sessionID'
         $ciente_transaccion = new ClienteTransaccion;
         $ciente_transaccion->create(
-            ['cliente_id' =>$cliente['id'],'ip'=>$ip,'estado_pago'=>1,
+            ['cliente_id' =>$cliente[0]['id'],'ip'=>$ip,'estado_pago'=>'1',
             'transactionID'=>$crear_transaccion->transactionID,
-            'sessionID'=>$crear_transaccion->sessionID
+            'sessionID'=>$crear_transaccion->sessionID,'bank_code'=>$input['sel_bank']
         ]);
         $bank_url = $crear_transaccion->bankURL;
         return (['result'=>$bank_url,'estado'=>'200']);

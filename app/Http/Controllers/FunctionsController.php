@@ -19,6 +19,10 @@ class FunctionsController extends Controller
             'seed' => $seed])];
             return $parametros;
         }
+    public function get_transaction_information($transation_id)
+    {
+        
+    }
         public function get_bank_list()
         {
             $bank_list = Cache::remember('bank', 1440, function () {
@@ -41,49 +45,50 @@ class FunctionsController extends Controller
 
         public function create_transactions(){
 
-             $tipo_ducumento = explode(':',session('cliente')['tipo_documento']);
+
+             $tipo_ducumento = explode(':',session('cliente')[0]['tipo_documento']);
             $transaction = ([
-                'reference' => session('cliente')['referente_pago'],
+                'reference' => session('cliente')[0]['referente_pago'],
                 'bankCode' => session('bank_code'),
                 'bankInterface' => session('tipo_persona'),
-                'returnURL' =>'https://dev.placetopay.com/redirection/sandbox/session/session/'.session('cliente')['referente_pago'],
-                'description' => session('cliente')['descripcion'],
+                'returnURL' =>'http://127.0.0.1:8000/'.session('cliente')[0]['referente_pago'].'/'.'pago/realizado',
+                'description' => session('cliente')[0]['descripcion'],
                 'language' => 'ES',
                 'currency' => 'COP',
-                'totalAmount' => session('cliente')['valor_total'],
+                'totalAmount' => session('cliente')[0]['valor_total'],
                 'taxAmount' => 0,
                 'devolutionBase' => 0,
                 'tipAmount' => 0,
                 'ipAddress' => session('ip_client'),
                 'payer' =>[
-                    'document' => session('cliente')['documento'],
+                    'document' => session('cliente')[0]['documento'],
                     'documentType' => $tipo_ducumento[0],
-                    'firstName' => session('cliente')['nombres'],
-                    'lastName' => session('cliente')['apellidos'],
-                    'emailAddress' => session('cliente')['correo'],
-                    'address' => session('cliente')['direccion'],
-                    'mobile' => session('cliente')['telefono_movil'],
+                    'firstName' => session('cliente')[0]['nombres'],
+                    'lastName' => session('cliente')[0]['apellidos'],
+                    'emailAddress' => session('cliente')[0]['correo'],
+                    'address' => session('cliente')[0]['direccion'],
+                    'mobile' => session('cliente')[0]['telefono_movil'],
                     'userAgent' => session('navegador'),
 
                 ],
                 'buyer' =>[
-                    'document' => session('cliente')['documento'],
+                    'document' => session('cliente')[0]['documento'],
                     'documentType' => $tipo_ducumento[0],
-                    'firstName' => session('cliente')['nombres'],
-                    'lastName' => session('cliente')['nombres'],
-                    'emailAddress' => session('cliente')['correo'],
-                    'address' => session('cliente')['direccion'],
-                    'mobile' => session('cliente')['telefono_movil'],
+                    'firstName' => session('cliente')[0]['nombres'],
+                    'lastName' => session('cliente')[0]['nombres'],
+                    'emailAddress' => session('cliente')[0]['correo'],
+                    'address' => session('cliente')[0]['direccion'],
+                    'mobile' => session('cliente')[0]['telefono_movil'],
 
                 ],
                 'shipping' =>[
-                    'document' => session('cliente')['documento'],
+                    'document' => session('cliente')[0]['documento'],
                     'documentType' => $tipo_ducumento[0],
-                    'firstName' => session('cliente')['nombres'],
-                    'lastName' => session('cliente')['nombres'],
-                    'emailAddress' => session('cliente')['correo'],
-                    'address' => session('cliente')['direccion'],
-                    'mobile' => session('cliente')['telefono_movil'],
+                    'firstName' => session('cliente')[0]['nombres'],
+                    'lastName' => session('cliente')[0]['nombres'],
+                    'emailAddress' => session('cliente')[0]['correo'],
+                    'address' => session('cliente')[0]['direccion'],
+                    'mobile' => session('cliente')[0]['telefono_movil'],
 
                 ],
 
@@ -92,7 +97,6 @@ class FunctionsController extends Controller
 
                     $param = $this->autenticacion();
                     $param['transaction'] = $transaction;
-                    
                     $servicio="https://test.placetopay.com/soap/pse/?wsdl";
                     $cliente = new SoapClient($servicio,$this->autenticacion());
                     $cliente ->__setLocation('https://test.placetopay.com/soap/pse/');
