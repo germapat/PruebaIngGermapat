@@ -10,6 +10,7 @@ class client_pse extends Seeder
      * @return void
      */
     public function run()
+
     {
         DB::table('cliente_pse')->insert([
             [
@@ -17,6 +18,8 @@ class client_pse extends Seeder
                 'apellidos' =>'Patiño Morales',
                 'documento' => '123456',
                 'correo' => 'gdpm1986@gmail.com',
+                
+
             ]
         ]);
     }

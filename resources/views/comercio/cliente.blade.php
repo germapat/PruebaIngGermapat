@@ -8,13 +8,13 @@
     <div class="box-body">
         <form id='frm_cliente' role="form" method="get" action="{{ route('bank_list') }}">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
+                <div class="col-md-12">
+                    <div class="form-group col-md-6  col-md-offset-3">
                         <label for="">Documento</label>
                         <input class="form-control" type="text" required name="documento" id="documento" value="">
                     </div>
-                    <div class="">
-                        <button class="btn btn-success btn-primary center-block btn-block" type="button" id="cliente_pagar" name="pagar">Pagar</button>
+                    <div class="form-group col-md-6  col-md-offset-3">
+                        <button class="btn btn-success btn-primary btn-block" type="button" id="cliente_pagar" name="pagar">Pagar</button>
                     </div>
                 </div>
 

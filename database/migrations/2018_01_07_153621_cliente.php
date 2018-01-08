@@ -19,8 +19,13 @@ class Cliente extends Migration
             $table->string('documento');
             $table->string('nombres');
             $table->string('apellidos');
-            $table->string('correo');
+            $table->string('correo')->unique();
             $table->string('referente_pago');
+            $table->string('descripcion');
+            $table->string('tipo_documento');
+            $table->string('direccion');
+            $table->string('telefono_movil');
+            $table->string('valor_total');
 
         });
 

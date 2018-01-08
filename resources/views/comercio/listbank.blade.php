@@ -7,24 +7,39 @@
     </div>
 
     <div class="box-body">
-        <form role="form" method="get" action="{{ route('get_registre_user') }}">
-
+        <form role="form" method="post" action="{{ route('get_registre_user') }}">
+            {{ csrf_field() }}
             <div class="row">
+                 @includeif('partial.error')
                 @foreach ($cliente as $value)
                 @component('partial.cliente')
-
-                @slot('documento')
-                {{ $value->documento }}
-                @endslot
-                @slot('nombres')
-                {{ $value->nombres }}
-                @endslot
-                @slot('apellidos')
-                {{ $value->apellidos }}
-                @endslot
-                @slot('referente_pago')
-                {{ $value->referente_pago }}
-                @endslot
+                    @slot('documento')
+                        {{ $value->documento }}
+                    @endslot
+                    @slot('descripcion')
+                    {{ $value->descripcion }}
+                    @endslot
+                    @slot('nombres')
+                        {{ $value->nombres }}
+                    @endslot
+                    @slot('apellidos')
+                        {{ $value->apellidos }}
+                    @endslot
+                    @slot('referente_pago')
+                        {{ $value->referente_pago }}
+                    @endslot
+                    @slot('tipo_documento')
+                        {{ $value->tipo_documento }}
+                    @endslot
+                    @slot('direccion')
+                        {{ $value->direccion }}
+                    @endslot
+                    @slot('telefono_movil')
+                        {{ $value->telefono_movil }}
+                    @endslot
+                    @slot('valor_total')
+                        {{ $value->valor_total }}
+                    @endslot
 
             @endcomponent
 
@@ -39,18 +54,21 @@
                     <div class="form-group col-md-6 col-sm-6 ">
                         <div class="form-group">
                             <p class=""><b>Seleccione de la lista la entidad con la que desea realizar el pagos</b></p>
-                            <select value = "" class="form-control" name="tipo_persona" id="sel_bank"  >
-                                @foreach ($bank_list as $key => $value)
+                            <select value = "" class="form-control" name="bank_code" id="sel_bank" >
+                                @isset($bank_list)
 
-                                <option selected = "" value="{{$value->bankCode}}" id="opt_seleccionar">{{$value->bankName}}</option>
+                                    @foreach ($bank_list as $key => $value)
 
-                                @endforeach
+                                        <option selected = "" value="{{$value->bankCode}}" id="opt_seleccionar">{{$value->bankName}}</option>
+
+                                    @endforeach
+                                @endisset
                             </select>
                         </div>
                     </div>
 
-                    <div class="col-md-12 col-sm-12">
-                        <button class="btn btn-info center-block btn-block" id='btn_pagar' type="submit" name="pagar">Pagar</button>
+                    <div class="col-md-6 col-sm-6 col-md-offset-3 ">
+                        <button class=" col-md-6 btn btn-info center-block btn-block" id='btn_pagar' type="submit" name="pagar">Pagar</button>
                     </div>
 
             </div>

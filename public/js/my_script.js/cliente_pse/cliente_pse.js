@@ -1,12 +1,14 @@
 $('#id_seguir').click(function(event) {
-
+    
     $.ajax({
         url: '/cliente/pse/listar',
         type: 'POST',
         dataType: 'JSON',
-        data: {'correo': $('#correo').val(),
-        '_token': $("input[name=_token]").val()
-    }
+        data: {'correo': $('#correo').val()
+    },
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
     })
     .done(function(result) {
         console.log(result.result);

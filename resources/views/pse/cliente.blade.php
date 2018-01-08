@@ -9,8 +9,9 @@ Facil,  rapido y seguro
         <h3 class="box-title" >PSE-Pagos seguros en linea/persona natural</h3>
     </div>
     <div class="box-body">
-            {{ csrf_field() }}
+
         <form id='frm_cliente_pse' role="form" method="post" action="{{ route('create_transaction') }}">
+            {{ csrf_field() }}
             <div class="row">
 
                 <div class="col-md-12">
@@ -31,22 +32,12 @@ Facil,  rapido y seguro
                         <label for="">Quiero registrarme ahora</label>
                     </div>
 
-                    <div class="form-group col-md-12">
-                        <label for="" class="col-md-4">E-mail</label>
-                        <input required type="email" id="correo" name="correo" value="">
-                    </div>
-                </div>
-                <div class="">
-                    <button class="btn btn-info" type="button" id="id_abandonar_pago" name="pagar">Abandonar el pago</button>
-                    <button class="btn btn-info" type="button" id="id_seguir" name="pagar">Seguir</button>
                 </div>
 
-            </form>
-        </div>
 
                     <div class="form-group col-md-12 col-md-12">
                         <label for="" class="">E-mail</label>
-                        <input class="form-control" required type="email" name="correo" value="">
+                        <input class="form-control" id="correo" required type="email" name="correo" value="">
                     </div>
                     <div class="col-md-6 col-sm-6 ">
                         <button class="btn btn-info btn-block" type="submit" id="id_abandonar_pago" name="pagar">Abandonar el pago</button>
@@ -61,7 +52,7 @@ Facil,  rapido y seguro
     </div>
 </div>
 @section('script')
-<script src ="/js/my_script.js/cliente/cliente.js"></script>
+<script src ="/js/my_script.js/cliente_pse/cliente_pse.js"></script>
 @endsection
 
 
