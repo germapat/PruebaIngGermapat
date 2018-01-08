@@ -15,8 +15,37 @@ class SoapClientController extends FunctionsController
         ->join('cliente_transaccion','cliente_transaccion.cliente_id','=','cliente.id')
         ->where('cliente.referente_pago',$referente_pago)
         ->get();
+        /*se valida el estado de la transacción de acuerdo a la
+        * referente de pago
+        *consumiento get_transaction_information
+        */
+        $get_transaction_information = $this->get_transaction_information($cliente[0]['transactionID']);
 
-        Notify::success('Pago registrado correctamente','Noticia');
+        // dd($get_transaction_information);
+        if($get_transaction_information==false) {
+            Notify::info('Se presento un problema para consultar el estado del pago,
+            sera notificado en las proximas horas del estado de la transacción','Noticia');
+            return view('comercio.pagorealizado',compact('cliente',$cliente));
+        }
+        elseif ($get_transaction_information->transactionState=="OK") {
+            try {
+                \DB::beginTransaction();
+                $cliente_transaccion = ClienteTransaccion::select('id')
+                ->where('transactionID',$get_transaction_information->transactionID)
+                ->update(['estado_pago'=>$get_transaction_information->responseReasonText]);
+
+                \DB::commit();
+                Notify::success('Su pago se encuentra en estado: '.$get_transaction_information->responseReasonText.'','Noticia');
+            } catch (\Exception $e) {
+                // echo $e->getMessage();
+                \DB::Rollback();
+                Notify::info('Su pago se encuentra en estado: '.$get_transaction_information->responseReasonText.'','Noticia');
+            }
+        }
+        else {
+            Notify::info('Su pago se encuentra en estado: '.$get_transaction_information->responseReasonText.'','Noticia');
+        }
+
         return view('comercio.pagorealizado',compact('cliente',$cliente));
     }
 
@@ -75,10 +104,11 @@ class SoapClientController extends FunctionsController
         $crear_transaccion = $this->create_transactions();
 
     if ($crear_transaccion->returnCode=='SUCCESS') {
-        // 'cliente_id', 'ip','estado_pago','transactionID','sessionID'
+
+        #Se guarda los datos que devuelve createTransaction
         $ciente_transaccion = new ClienteTransaccion;
         $ciente_transaccion->create(
-            ['cliente_id' =>$cliente[0]['id'],'ip'=>$ip,'estado_pago'=>'1',
+            ['cliente_id' =>$cliente[0]['id'],'ip'=>$ip,'estado_pago'=>'Pendiente',
             'transactionID'=>$crear_transaccion->transactionID,
             'sessionID'=>$crear_transaccion->sessionID,'bank_code'=>$input['sel_bank']
         ]);

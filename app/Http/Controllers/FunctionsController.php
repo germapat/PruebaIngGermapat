@@ -21,7 +21,23 @@ class FunctionsController extends Controller
         }
     public function get_transaction_information($transation_id)
     {
-        
+
+        $param = $this->autenticacion();
+        $param['transactionID'] = $transation_id;
+        try {
+            $servicio="https://test.placetopay.com/soap/pse/?wsdl";
+            $cliente = new SoapClient($servicio,$this->autenticacion());
+            $cliente ->__setLocation('https://test.placetopay.com/soap/pse/');
+            //llamamos al métdo que nos interesa con los parámetros
+            $resultado = $cliente->getTransactionInformation($param);
+            $resultado = $resultado->getTransactionInformationResult;
+            return $resultado;
+
+        } catch (\Exception $e) {
+            return false;
+        }
+
+
     }
         public function get_bank_list()
         {
