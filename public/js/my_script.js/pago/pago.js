@@ -1,5 +1,6 @@
 $('#btn_pagar').click(function(event) {
-
+    $(this).attr('disabled','true')
+    alertas('Cargando información,espere','Cargando...','success')
 
     $.ajax({
         url: '/cliente/pagar',
@@ -12,21 +13,17 @@ $('#btn_pagar').click(function(event) {
 
         },
         headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-}).always(function(result) {
-    console.log(result.length)
-    console.log(result.result)
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    }).always(function(result) {
+        console.log(result.length)
+        console.log(result.result)
         if (result.estado==200) {
             window.location.assign(result.result)
         }else {
-            for (var i = 0; i < result.result.length; i++) {
-                $('#ul_error').append('<li>'+result.result+'</li>')
-            }
-            $('alerta_error_transaccion').show();
+            $('#ul_error').append('<li>'+result.result+'</li>')
+
+            $('#alerta_error_transaccion').show();
         }
     });
-
-
-
 });

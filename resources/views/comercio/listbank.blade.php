@@ -20,6 +20,7 @@
                 </div>
                  @includeif('partial.error')
                 @foreach ($cliente as $value)
+                    @endforeach
                 @component('partial.cliente')
                     @slot('documento')
                         {{ $value->documento }}
@@ -54,7 +55,7 @@
 
             @endcomponent
 
-                @endforeach
+
                     <div class="form-group col-md-6 col-sm-6 ">
                         <p class=""><b>Indique el tipo de cuenta con la cual realizara el pago</b></p>
                         <select value = "" class="form-control" name="tipo_persona" id="sel_type_person"  >

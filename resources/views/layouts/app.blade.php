@@ -85,19 +85,25 @@
 
         <ul class="sidebar-menu">
             <li>
-                <a href="{{ route('client') }}"title="Menu 1" class = "fa fa-plus">
+                <a href="{{ route('client') }}"title="Menu 1" class="fa fa-shopping-cart" aria-hidden="true">
                     <i class="pull-right "></i>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
-                    <span>Factura</span>
+                    <span>Consultar factura</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('pagos_listar') }}"title="Menu 1" class = "fa fa-money">
+                    <i class="pull-right "></i>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    <span>Consultar Pagos</span>
                 </a>
             </li>
         </ul>
-            @if (Auth::check())
-                @include('layouts.navbar')
 
-                @endif
 
         </section>
         <!-- /.sidebar -->
@@ -376,6 +382,8 @@
           new PNotify({!! Session::get('notifier.notice') !!});
       </script>
   @endif
+
+  Session()->forget('notifier.notice')
 
 
 @yield('script')

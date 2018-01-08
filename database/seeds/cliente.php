@@ -26,5 +26,35 @@ class cliente extends Seeder
 
             ]
         ]);
+        DB::table('cliente')->insert([
+            [
+                'nombres' => 'German David',
+                'apellidos' =>'Patiño Morales',
+                'documento' => '654321',
+                'correo' => 'gdpm1986@hotmail.com',
+                'referente_pago' => '654321',
+                'descripcion' => 'Pago prueba German',
+                'tipo_documento' => 'CC: Cédula de ciudadanía colombiana',
+                'direccion' => 'Calle 123',
+                'telefono_movil' => '3000000012',
+                'valor_total' => '100000',
+
+            ]
+        ]);
+        DB::table('cliente')->insert([
+            [
+                'nombres' => 'German David',
+                'apellidos' =>'Patiño Morales',
+                'documento' => '123456789',
+                'correo' => 'adrianaisaza2007@yahoo.es',
+                'referente_pago' => '123456789',
+                'descripcion' => 'Pago prueba German',
+                'tipo_documento' => 'CC: Cédula de ciudadanía colombiana',
+                'direccion' => 'Calle falsa 123',
+                'telefono_movil' => '3000000012',
+                'valor_total' => '50000',
+
+            ]
+        ]);
     }
 }

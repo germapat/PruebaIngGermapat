@@ -10,6 +10,12 @@ use Jleon\LaravelPnotify\Notify;
 
 class SoapClientController extends FunctionsController
 {
+    public function listar_pagos(){
+        $cliente = Cliente::select('*')
+           ->join('cliente_transaccion','cliente_transaccion.cliente_id','=','cliente.id')
+           ->get();
+           return view('comercio.intentoslistar',compact('cliente',$cliente));
+    }
     public function pago_realizado($referente_pago)
     {   $cliente = Cliente::select('*')
         ->join('cliente_transaccion','cliente_transaccion.cliente_id','=','cliente.id')
@@ -19,14 +25,23 @@ class SoapClientController extends FunctionsController
         * referente de pago
         *consumiento get_transaction_information
         */
-        $get_transaction_information = $this->get_transaction_information($cliente[0]['transactionID']);
+       if (count($cliente)>0) {
+           # code...
+           $get_transaction_information = $this->get_transaction_information($cliente[0]['transactionID']);
+       }else {
+           Notify::warning('No se encontraron datos','Oopp!!');
+           return redirect('/');
+       }
 
-        // dd($get_transaction_information);
         if($get_transaction_information==false) {
             Notify::info('Se presento un problema para consultar el estado del pago,
             sera notificado en las proximas horas del estado de la transacción','Noticia');
             return view('comercio.pagorealizado',compact('cliente',$cliente));
         }
+        /*
+            Si hay una respuesta validad se hace la actualización del estado de
+            pago, con un transation
+         */
         elseif ($get_transaction_information->transactionState=="OK") {
             try {
                 \DB::beginTransaction();
@@ -56,11 +71,17 @@ class SoapClientController extends FunctionsController
     {
         $input = $request->all();
         // Cache::forget('bank');
+        /*
+            Se consulta en la bd la existencia del documento del cliente
+         */
         $cliente = Cliente::select('*')->where('documento',$input['documento'])->get();
         $bank_list = Cache::get('bank');
         # se validad si hay datos en cache y si no hay se consume el api getBankList
         if ($bank_list==null) {
             $bank_list = $this->get_bank_list();
+            /*
+                Si el servicio presenta novedad
+             */
             if ($bank_list==false) {
                 $error = 'No se pudo obtener la lista de Entidades Financieras, por favor intente más tarde';
                 return view('comercio.listbank',compact('cliente',$cliente,'error',$error));
@@ -72,7 +93,7 @@ class SoapClientController extends FunctionsController
 
     }
     /*
-    *Funcion para validar que el cliente exista
+    *Funcion para validar que el cliente exista en la bd
     */
     public function get_client_list($documento)
     {
@@ -82,6 +103,7 @@ class SoapClientController extends FunctionsController
     }
     /*
     *Funcion para mostra el formulario de consulta del cliente
+    por documento
     */
     public function client()
     {
@@ -106,22 +128,31 @@ class SoapClientController extends FunctionsController
     if ($crear_transaccion->returnCode=='SUCCESS') {
 
         #Se guarda los datos que devuelve createTransaction
-        $ciente_transaccion = new ClienteTransaccion;
-        $ciente_transaccion->create(
-            ['cliente_id' =>$cliente[0]['id'],'ip'=>$ip,'estado_pago'=>'Pendiente',
-            'transactionID'=>$crear_transaccion->transactionID,
-            'sessionID'=>$crear_transaccion->sessionID,'bank_code'=>$input['sel_bank']
-        ]);
-        $bank_url = $crear_transaccion->bankURL;
-        return (['result'=>$bank_url,'estado'=>'200']);
-    }
-    else {
+        try {
+            \DB::beginTransaction();
+            $ciente_transaccion = new ClienteTransaccion;
+            $ciente_transaccion->create(
+                ['cliente_id' =>$cliente[0]['id'],'ip'=>$ip,'estado_pago'=>'Pendiente',
+                'transactionID'=>$crear_transaccion->transactionID,
+                'sessionID'=>$crear_transaccion->sessionID,'bank_code'=>$input['sel_bank']
+            ]);
+            \DB::commit();
+            session()->forget('cliente','bank_code','ip_client','navegador','tipo_persona');
 
+            $bank_url = $crear_transaccion->bankURL;
+            return (['result'=>$bank_url,'estado'=>'200']);
+
+        } catch (Exception $e) {
+            session()->forget('cliente','bank_code','ip_client','navegador','tipo_persona');
+            \DB::RollBack();
+            $response_reason_text = $crear_transaccion->responseReasonText;
+            return json_encode(['result'=>$response_reason_text,'estado'=>'500']);
+
+        }
     }
-        $response_reason_text = $crear_transaccion->responseReasonText;
+    session()->forget('cliente','bank_code','ip_client','navegador','tipo_persona');
+       $response_reason_text = $crear_transaccion->responseReasonText;
         return json_encode(['result'=>$response_reason_text,'estado'=>'500']);
-
-
     }
 
 }
