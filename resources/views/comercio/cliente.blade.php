@@ -6,7 +6,9 @@
     </div>
 
     <div class="box-body">
-        <form id='frm_cliente' role="form" method="get" action="{{ route('bank_list') }}">
+        <form id='frm_cliente' role="form" method="post" action="{{ route('bank_list') }}">
+            {{ csrf_field() }}
+             
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group col-md-6  col-md-offset-3">
@@ -24,6 +26,7 @@
 </div>
 @section('script')
 <script src ="/js/my_script.js/cliente/cliente.js"></script>
+
 @endsection
 
 @endsection

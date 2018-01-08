@@ -40,11 +40,13 @@ class FunctionsController extends Controller
         }
 
         public function create_transactions(){
-            $transaction = ['transaction' =>([
-                'bank_code' => session('cliente')['bank_code'],
-                'bankInterface' => session('cliente')['tipo_persona'],
-                'returnURL' =>'https://dev.placetopay.com/redirection/sandbox/session/5976030f5575d',
-                'reference' => '5976030f5575d',
+
+             $tipo_ducumento = explode(':',session('cliente')['tipo_documento']);
+            $transaction = ([
+                'reference' => session('cliente')['referente_pago'],
+                'bankCode' => session('bank_code'),
+                'bankInterface' => session('tipo_persona'),
+                'returnURL' =>'https://dev.placetopay.com/redirection/sandbox/session/session/'.session('cliente')['referente_pago'],
                 'description' => session('cliente')['descripcion'],
                 'language' => 'ES',
                 'currency' => 'COP',
@@ -55,10 +57,10 @@ class FunctionsController extends Controller
                 'ipAddress' => session('ip_client'),
                 'payer' =>[
                     'document' => session('cliente')['documento'],
-                    'documentType' => session('cliente')['tipo_documento'],
+                    'documentType' => $tipo_ducumento[0],
                     'firstName' => session('cliente')['nombres'],
                     'lastName' => session('cliente')['apellidos'],
-                    'emailAddress' => session('correo'),
+                    'emailAddress' => session('cliente')['correo'],
                     'address' => session('cliente')['direccion'],
                     'mobile' => session('cliente')['telefono_movil'],
                     'userAgent' => session('navegador'),
@@ -66,38 +68,45 @@ class FunctionsController extends Controller
                 ],
                 'buyer' =>[
                     'document' => session('cliente')['documento'],
-                    'documentType' => session('cliente')['tipo_documento'],
+                    'documentType' => $tipo_ducumento[0],
                     'firstName' => session('cliente')['nombres'],
                     'lastName' => session('cliente')['nombres'],
-                    'emailAddress' => session('correo'),
+                    'emailAddress' => session('cliente')['correo'],
                     'address' => session('cliente')['direccion'],
                     'mobile' => session('cliente')['telefono_movil'],
 
                 ],
                 'shipping' =>[
                     'document' => session('cliente')['documento'],
-                    'documentType' => session('cliente')['tipo_documento'],
+                    'documentType' => $tipo_ducumento[0],
                     'firstName' => session('cliente')['nombres'],
                     'lastName' => session('cliente')['nombres'],
-                    'emailAddress' => session('correo'),
+                    'emailAddress' => session('cliente')['correo'],
                     'address' => session('cliente')['direccion'],
                     'mobile' => session('cliente')['telefono_movil'],
 
                 ],
 
+            ]);
+                try {
 
-                ])];
+                    $param = $this->autenticacion();
+                    $param['transaction'] = $transaction;
+                    
+                    $servicio="https://test.placetopay.com/soap/pse/?wsdl";
+                    $cliente = new SoapClient($servicio,$this->autenticacion());
+                    $cliente ->__setLocation('https://test.placetopay.com/soap/pse/');
+                    //llamamos al métdo que nos interesa con los parámetros
+                    $resultado = $cliente->createTransaction($param);
+                    $resultado = $resultado->createTransactionResult;
 
-                $param = $this->autenticacion();
-                $param['transaction'] = $transaction;
+                    #Se retorna el objecto que devuelve la petición
+                    return $resultado;
 
-                $servicio="https://test.placetopay.com/soap/pse/?wsdl";
-                $cliente = new SoapClient($servicio,$param);
-                $cliente ->__setLocation('https://test.placetopay.com/soap/pse/');
-                //llamamos al métdo que nos interesa con los parámetros
-                $resultado = $cliente->createTransaction($param);
-                $resultado = $resultado->PSETransactionResponse;
-                return $resultado;
+                } catch (\Exception $e) {
+                    $e->getMessage();
+                    return $e;
+                }
             }
             public function get_ip()
             {

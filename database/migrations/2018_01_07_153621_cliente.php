@@ -31,6 +31,10 @@ class Cliente extends Migration
 
         Schema::create('cliente_transaccion', function ($table) {
             $table->increments('id');
+            $table->string('ip')->ipAddress();
+            $table->string('estado_pago')->default('1');
+            $table->string('transactionID');
+            $table->string('sessionID');
             $table->integer('cliente_id')->unsigned();
             $table->foreign('cliente_id')
               ->references('id')

@@ -40,7 +40,7 @@ Facil,  rapido y seguro
                         <input class="form-control" id="correo" required type="email" name="correo" value="">
                     </div>
                     <div class="col-md-6 col-sm-6 ">
-                        <button class="btn btn-info btn-block" type="submit" id="id_abandonar_pago" name="pagar">Abandonar el pago</button>
+                        <button class="btn btn-info btn-block" type="button" id="id_abandonar_pago" name="pagar">Abandonar el pago</button>
                     </div>
                     <div class="col-md-6 col-sm-6 ">
                         <button class="btn btn-info btn-block" type="button" id="id_seguir" name="pagar">Seguir</button>

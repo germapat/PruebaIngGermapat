@@ -12,8 +12,9 @@ $('#cliente_pagar').click(function() {
             alertas('Alerta','No encontro ningun registro con el documento: '+documento,'warning')
             return false;
         }else {
-            
+
             $( "#frm_cliente" ).submit();
+            windonw.location(bank_url)
         }
     })
     .fail(function() {

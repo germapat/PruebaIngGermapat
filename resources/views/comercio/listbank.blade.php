@@ -7,9 +7,17 @@
     </div>
 
     <div class="box-body">
-        <form role="form" method="post" action="{{ route('get_registre_user') }}">
+        <form id="frm_bank_list" role="form" method="post" action="{{ route('get_registre_user') }}">
             {{ csrf_field() }}
             <div class="row">
+                <div id="alerta_error_transaccion" class="alert alert-warning" style="display: none;">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                    <ul id ="ul_error">
+
+                    </ul>
+                </div>
                  @includeif('partial.error')
                 @foreach ($cliente as $value)
                 @component('partial.cliente')
@@ -40,6 +48,9 @@
                     @slot('valor_total')
                         {{ $value->valor_total }}
                     @endslot
+                    @slot('correo')
+                        {{ $value->correo }}
+                    @endslot
 
             @endcomponent
 
@@ -68,11 +79,18 @@
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-md-offset-3 ">
-                        <button class=" col-md-6 btn btn-info center-block btn-block" id='btn_pagar' type="submit" name="pagar">Pagar</button>
+                        <button class=" col-md-6 btn btn-info center-block btn-block" id='btn_pagar' type="button" name="pagar">Pagar</button>
                     </div>
 
             </div>
         </form>
+    @endsection
     </div>
 </div>
+
+
+    @section('script')
+
+<script src ="/js/my_script.js/pago/pago.js"></script>
+
 @endsection

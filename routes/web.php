@@ -16,9 +16,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/listar/bancos','SoapClientController@bank_list')->name('bank_list');
+Route::post('/listar/bancos','SoapClientController@bank_list')->name('bank_list');
 Route::get('/cliente','SoapClientController@client')->name('client');
 Route::get('/cliente/{id}/consultar','SoapClientController@get_client_list')->name('client_list');
-Route::post('/cliente/registrar','SoapClientController@cliente_pse')->name('get_registre_user');
-Route::post('/cliente/pse/listar','SoapClientController@cliente_pse_get')->name('cliente_pse_get');
-Route::post('/cliente/crear/transaccion','SoapClientController@create_transaction')->name('create_transaction');
+Route::post('/cliente/pagar','SoapClientController@crear_transaccion')->name('get_registre_user');

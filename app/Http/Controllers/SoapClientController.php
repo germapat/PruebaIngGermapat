@@ -5,10 +5,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\FunctionsController;
 use App\Models\Cliente;
-use App\Models\ClientePse;
+use App\Models\ClienteTransaccion;
 
 class SoapClientController extends FunctionsController
 {
+
     /*
     *Funcion para listar los bancos y mostrar los datos del cliente
     */
@@ -48,31 +49,39 @@ class SoapClientController extends FunctionsController
         return view('comercio.cliente');
 
     }
-    public function cliente_pse(Request $request)
+    public function crear_transaccion(Request $request)
     {
         $input = $request->all();
+
+        $cliente = Cliente::select('*')->where('documento',$input['documento'])->get()->toArray();
         #se toma la ip del cliente
         $ip = $this->get_ip();
         #se toma el navegador
         $navegador = $this->get_navegador();
+        # se almacenan los datos del basicos del cliente#
+        session(["cliente"=>$cliente[0],'tipo_persona'=>$input['tipo_persona'],
+        'ip_client'=>$ip,'navegador' =>$navegador,'bank_code'=>$input['sel_bank']]);
 
-        # se almacenan los datos del basicos del cliente        #
-        session(["cliente"=>$input,'ip_client'=>$ip,'navegador' =>$navegador]);
+        $crear_transaccion = $this->create_transactions();
+        
+    if ($crear_transaccion->returnCode=='SUCCESS') {
+        // 'cliente_id', 'ip','estado_pago','transactionID','sessionID'
+        $ciente_transaccion = new ClienteTransaccion;
+        $ciente_transaccion->create(
+            ['cliente_id' =>$cliente['id'],'ip'=>$ip,'estado_pago'=>1,
+            'transactionID'=>$crear_transaccion->transactionID,
+            'sessionID'=>$crear_transaccion->sessionID
+        ]);
+        $bank_url = $crear_transaccion->bankURL;
+        return (['result'=>$bank_url,'estado'=>'200']);
+    }
+    else {
 
-        return view('pse.cliente');
     }
-    public function cliente_pse_get(Request $request)
-    {
-        $input = $request->all();
-        $cliente_pse = ClientePse::select('*')->where('correo',$input['correo'])
-        ->get()->toArray();
-        return json_encode(['result'=>$cliente_pse]);
-    }
-    public function create_transaction(Request $request)
-    {   $input = $request->all();
-        session(['correo'=>$input['correo']]);
+        $response_reason_text = $crear_transaccion->responseReasonText;
+        return json_encode(['result'=>$response_reason_text,'estado'=>'500']);
 
-        $requ = $this->create_transactions();
-        dd($requ);
+
     }
+
 }
