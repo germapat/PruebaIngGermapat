@@ -2,6 +2,16 @@
 
 <div class="">
 
+        <div class="form-group col-md-6 col-sm-6 ">
+            <label for="">Nombres</label>
+            <input id="nombres" class="form-control" readonly="true" type="text"  name="nombres" value="{{$nombres}}">
+        </div>
+
+
+            <div class="form-group col-md-6 col-sm-6 ">
+                <label for="">Apellidos</label>
+                <input id="apellidos" class="form-control" readonly="true" type="text"  name="apellidos" value="{{$apellidos}}">
+            </div>
     <div class="form-group col-md-6 col-sm-6">
         <label for="">Documento</label>
         <input id = "documento" class="form-control" readonly="true" type="text"  name="documento" value="{{$documento}}">
@@ -9,19 +19,10 @@
 
 
     <div class="form-group col-md-6 col-sm-6 ">
-        <label for="">Referente de pago</label>
+        <label for="">Referencia de pago</label>
         <input id="referencia_pago" class="form-control" readonly="true" type="text"  name="referente_pago" value="{{$referente_pago}}">
     </div>
 
-    <div class="form-group col-md-6 col-sm-6 ">
-        <label for="">Nombres</label>
-        <input id="nombres" class="form-control" readonly="true" type="text"  name="nombres" value="{{$nombres}}">
-    </div>
-
-    <div class="form-group col-md-6 col-sm-6 ">
-        <label for="">Apellidos</label>
-        <input id="apellidos" class="form-control" readonly="true" type="text"  name="apellidos" value="{{$apellidos}}">
-    </div>
     <div class="form-group col-md-6 col-sm-6 ">
        <label for="">Descripción pago</label>
        <input id="descripcion" class="form-control" readonly="true" type="text"  name="descripcion" value="{{$descripcion}}">

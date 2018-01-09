@@ -18,7 +18,7 @@ class SoapClientController extends FunctionsController
     }
     public function pago_realizado($referente_pago)
     {   $cliente = Cliente::select('referente_pago','cliente.documento','nombres','apellidos','correo',
-        'descripcion','tipo_documento','direccion','transactionID'
+        'descripcion','tipo_documento','direccion','transactionID','telefono_movil','valor_total'
         )
         ->join('cliente_transaccion','cliente_transaccion.cliente_id','=','cliente.id')
         ->where('cliente.referente_pago',$referente_pago)
