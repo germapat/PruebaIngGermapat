@@ -48,9 +48,6 @@
 
                 @endforeach
 
-                    <div class="col-md-6 col-sm-6 col-md-offset-3 ">
-                        <button class=" col-md-6 btn btn-info center-block btn-block" id='btn_pagar' type="button" name="pagar">Pagar</button>
-                    </div>
 
             </div>
         </form>

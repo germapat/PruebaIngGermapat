@@ -369,21 +369,11 @@
 
 
 @if (Session::has('notifier.notice'))
-      <script>
-      window.onload=function(){
-  Objeto=document.getElementsByTagName("a");
-  for(a=0;a<Objeto.length;a++){
-      Objeto[a].onclick=function(){
-          location.replace(this.href);
-          return false;
-      }
-  }
- }
-          new PNotify({!! Session::get('notifier.notice') !!});
-      </script>
-  @endif
+    <script>
+        new PNotify({!! Session::get('notifier.notice') !!});
+    </script>
+@endif
 
-  Session()->forget('notifier.notice')
 
 
 @yield('script')

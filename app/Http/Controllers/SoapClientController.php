@@ -17,10 +17,15 @@ class SoapClientController extends FunctionsController
            return view('comercio.intentoslistar',compact('cliente',$cliente));
     }
     public function pago_realizado($referente_pago)
-    {   $cliente = Cliente::select('*')
+    {   $cliente = Cliente::select('referente_pago','cliente.documento','nombres','apellidos','correo',
+        'descripcion','tipo_documento','direccion','transactionID'
+        )
         ->join('cliente_transaccion','cliente_transaccion.cliente_id','=','cliente.id')
         ->where('cliente.referente_pago',$referente_pago)
-        ->get();
+        ->orderBy('cliente_transaccion.id','desc')
+        ->get()
+        ->take(1);
+
         /*se valida el estado de la transacción de acuerdo a la
         * referente de pago
         *consumiento get_transaction_information
@@ -32,7 +37,6 @@ class SoapClientController extends FunctionsController
            Notify::warning('No se encontraron datos','Oopp!!');
            return redirect('/');
        }
-
         if($get_transaction_information==false) {
             Notify::info('Se presento un problema para consultar el estado del pago,
             sera notificado en las proximas horas del estado de la transacción','Noticia');

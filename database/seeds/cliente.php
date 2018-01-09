@@ -20,7 +20,7 @@ class cliente extends Seeder
                 'referente_pago' => '123456',
                 'descripcion' => 'Pago prueba German',
                 'tipo_documento' => 'CC: Cédula de ciudadanía colombiana',
-                'direccion' => 'Avenidad siempre viva 123',
+                'direccion' => 'Avenida siempre viva 123',
                 'telefono_movil' => '3000000012',
                 'valor_total' => '10000',
 
@@ -28,12 +28,12 @@ class cliente extends Seeder
         ]);
         DB::table('cliente')->insert([
             [
-                'nombres' => 'German David',
-                'apellidos' =>'Patiño Morales',
+                'nombres' => 'Ismael',
+                'apellidos' =>'Patiño Isaza',
                 'documento' => '654321',
                 'correo' => 'gdpm1986@hotmail.com',
                 'referente_pago' => '654321',
-                'descripcion' => 'Pago prueba German',
+                'descripcion' => 'Pago prueba Ismael',
                 'tipo_documento' => 'CC: Cédula de ciudadanía colombiana',
                 'direccion' => 'Calle 123',
                 'telefono_movil' => '3000000012',
